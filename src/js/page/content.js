@@ -1,4 +1,4 @@
-function user1(){
-  console.log("content");
+function content() {
+  alert("JavaScript脚本正常运行");
 }
-user1();
+content();
