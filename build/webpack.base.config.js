@@ -25,6 +25,10 @@ let config = {
         loader: "html-loader"
       },
       {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
+      {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
@@ -69,14 +73,14 @@ let config = {
         collapseWhitespace: false //删除空白符与换行符
       }
     }),
-    new HtmlLayoutPlugin(),
     new webpack.HotModuleReplacementPlugin() //热加载
   ]
 };
 
 //Webpack多页面插件支持
 mpaWebpackConfig.mutiplePageView().forEach(page => {
-  config.plugins.push(page)
+  config.plugins.push(page);
 });
+config.plugins.push(new HtmlLayoutPlugin());
 
 module.exports = config;

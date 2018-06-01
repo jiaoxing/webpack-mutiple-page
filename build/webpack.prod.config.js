@@ -14,6 +14,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const env = require('../config/prod.env')
 
 const webpackConfig = merge(baseWebpackConfig, {
+  mode: "production",
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
@@ -24,8 +25,8 @@ const webpackConfig = merge(baseWebpackConfig, {
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: config.build.assetsRoot,
-    filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+    filename: utils.assetsPath('js/[name].[hash].js'),
+    chunkFilename: utils.assetsPath('js/[id].[hash].js')
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -56,30 +57,6 @@ const webpackConfig = merge(baseWebpackConfig, {
       }
     }),
     new webpack.HashedModuleIdsPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks(module) {
-        // any required modules inside node_modules are extracted to vendor
-        return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf(
-            path.join(__dirname, '../node_modules')
-          ) === 0
-        )
-      }
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      minChunks: Infinity
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'app',
-      async: 'vendor-async',
-      children: true,
-      minChunks: 3
-    }),
     new CopyWebpackPlugin([{
       from: path.resolve(__dirname, '../static'),
       to: config.build.assetsSubDirectory,
